@@ -79,10 +79,15 @@ function Question(question,answers,correct){
 }
 
 //displayQuestion is a method - it is a function that can be triggered
+//displayQuestion is then attached to Question as a method ("function")
 Question.prototype.displayQuestion = function(){
     console.log(this.question);
+    for(i=0;i < this.answer.length; i++){
+        console.log(i + ": " + this.answer[i]);
+    }  
 }
 
+//new question - new empty object and then you feed the object with data and that is stored in memory
 var q1 = new Question ('Is Javascript the coolest programmign language in the world?', ['Yes','No'],0);
 var q2 = new Question('What is the name of this course\'s teacher?', ['John', 'Michael','Jonas'],2);
 var q3 = new Question('What best describes coding?', ['Boring', 'Hard','Fun','Tedious'],2);
@@ -93,4 +98,15 @@ const questions = [q1,q2,q3];
 
 const n = Math.floor(Math.random() * questions.length);
 
-q1.displayQuestion();
+
+// let john = {
+//     name: "hi me",
+//     displayMe: function(){
+//         console.log(this.name)
+//     }
+// }
+
+// john.displayMe();
+
+//you really only care about this method being triggered 
+questions[n].displayQuestion();
