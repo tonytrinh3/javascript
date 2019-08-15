@@ -77,8 +77,20 @@ function Question(question,answers,correct){
     this.correct=correct;
 
 }
+
+//displayQuestion is a method - it is a function that can be triggered
+Question.prototype.displayQuestion = function(){
+    console.log(this.question);
+}
+
 var q1 = new Question ('Is Javascript the coolest programmign language in the world?', ['Yes','No'],0);
 var q2 = new Question('What is the name of this course\'s teacher?', ['John', 'Michael','Jonas'],2);
 var q3 = new Question('What best describes coding?', ['Boring', 'Hard','Fun','Tedious'],2);
 
+
+
 const questions = [q1,q2,q3];
+
+const n = Math.floor(Math.random() * questions.length);
+
+q1.displayQuestion();
