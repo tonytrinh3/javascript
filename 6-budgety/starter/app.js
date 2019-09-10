@@ -11,13 +11,26 @@ const budgetController = (function(){
         this.description = description;
         this.value = value;
     };
+    //we want to make function private
+    const calculateTotal = function(type) {
+        
+        let sum = 0;
+
+        data.allItems[type].forEach(function(currentElement){
+            console.log(currentElement);
+            sum += currentElement.value;
+        });
+
+        data.totals[type] = sum;
+        console.log(data.totals[type]);
+
+    }
 
     // let allExpenses = [];
     // let allIncomes= [];
     // let totalExpenses= 0;
 
     let data = {
-
         allItems:{
             exp: [],
             inc: []
@@ -26,7 +39,10 @@ const budgetController = (function(){
         totals:{
             exp: 0,
             inc: 0
-        }
+        },
+        budget: 0,
+        //-1 is used for non existent number
+        percentage: -1
     };
 
     return {
@@ -58,6 +74,33 @@ const budgetController = (function(){
             //to let other functions have access to new Item
             //return the new element
             return newItem;
+        },
+
+        calculateBudget: function(){
+
+            //calculate total income and expenses
+            calculateTotal('exp');
+            calculateTotal('inc');
+
+            //calculate the budget: income - expenses
+            data.budget = data.totals.inc - data.totals.exp;
+
+            //calculate the percentage of income that we spent
+            data.percentage = Math.round((data.totals.exp / data.totals.inc)*100);
+
+        },
+        //method for only returning data  - having function that only retrieve data or set data 
+        getBudget: function(){
+            //object is good for returning multiple data
+            return {
+                budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                percentage: data.percentage
+            }
+        },
+        testing: function(){
+            return data;
         }
     }
 }
@@ -84,7 +127,7 @@ const UIController = (function(){
             return{
                 type: document.querySelector(DOMstrings.inputType).value,
                 description: document.querySelector(DOMstrings.inputDescription).value,
-                value: document.querySelector(DOMstrings.inputValue).value
+                value: parseFloat(document.querySelector(DOMstrings.inputValue).value)
             };
         },
         
@@ -134,6 +177,26 @@ const UIController = (function(){
             document.querySelector(element).insertAdjacentHTML('beforeend',newHtml);
         },
 
+        clearFields: function(){
+            let fields, fieldsArr;
+            //hold the results of the selection
+            //not an array
+            fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue );
+          
+            //slice function from browser is always attached to an array
+            //so you are calling that function and use it on fields (a nodelist) and then this will return an array, which we can use 
+            fieldsArr = Array.prototype.slice.call(fields);
+
+
+            //anonymous function inside is a callback function
+            fieldsArr.forEach(function(currentElement){
+                currentElement.value = "";
+            });
+
+            fieldsArr[0].focus();
+
+        },
+
         //you just want to pass the DOMstrings to the next function in order to keep DOMstrings in one spot
         getDOMstrings: function(){
             return DOMstrings;
@@ -162,19 +225,37 @@ const controller = (function(budgetCtrl, UICtrl){
         })
     };
 
+    //every function has a specific task
+    const updateBudget = function(){
+        //5. calculate the budget
+        budgetCtrl.calculateBudget();
+        //6. return the budget 
+        const budget = budgetCtrl.getBudget();
+        //7. display the budget on the UI
+        console.log(budget);
+    };
+
     const ctrlAddItem = function(){
         let input, newItem;
         //1. get the field input data
         input = UICtrl.getInput();
-        console.log(input)
-        //2. add the item to the budget controller
-        //it returns an object
-        newItem = budgetCtrl.addItem(input.type, input.description, input.value);
-        console.log(newItem);
-        //3. add the item to the UI
-        UICtrl.addListItem(newItem, input.type);
-        //4. calculate the budget
-        //5. display the budget on the UI
+     
+        //if description is not empty and if input.value is not "not a number"
+        if(input.description !== "" && !isNaN(input.value) && input.value > 0){
+            //2. add the item to the budget controller
+            //it returns an object
+            newItem = budgetCtrl.addItem(input.type, input.description, input.value);
+            
+            //3. add the item to the UI
+            UICtrl.addListItem(newItem, input.type);
+            //4. clear the fields 
+            UICtrl.clearFields();
+
+            //5. calculate and update budget
+
+            updateBudget();
+
+        }
     };
 
     return {
