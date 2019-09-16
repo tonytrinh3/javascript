@@ -213,6 +213,14 @@ const UIController = (function(){
             document.querySelector(element).insertAdjacentHTML('beforeend',newHtml);
         },
 
+        deleteListItem: function(selectorID){
+            //we can only remove a child
+            // document.getElementById(selectorID).parentNode.removeChild(document.getElementById(selectorID))
+            const element = document.getElementById(selectorID) ;
+            //remove the ID that you chose
+            element.parentNode.removeChild(element)
+        },
+
         clearFields: function(){
             let fields, fieldsArr;
             //hold the results of the selection
@@ -333,7 +341,9 @@ const controller = (function(budgetCtrl, UICtrl){
             budgetCtrl.deleteItem(type,ID);
 
             //2. delete the item from the ui
+            UICtrl.deleteListItem(itemID);
             //3. update and show the new budget 
+            updateBudget();
         }
 
     };
