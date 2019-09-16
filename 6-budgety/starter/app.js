@@ -79,7 +79,25 @@ const budgetController = (function(){
         deleteItem: function(type,id){
 
             // id= 3
-            data.allItems[type][id];
+            //you don't want to choose based on the index within array but based on the content of the id 
+            //data.allItems[type][id];
+            //id = [1 2 4 6 8]
+            //index = 3;
+
+            //difference between map and forEach is that map returns a whole new array
+            //returns an array with all id of inc or exp from the object...
+            const ids = data.allItems[type].map(function(currentElement){
+                return currentElement.id;
+            });
+
+            //this will find the index of id within the array that match with the id that we pass through "indexOf"
+            index = ids.indexOf(id);
+
+            if (index !== -1){
+                //start at the index and remove 1
+                data.allItems[type].splice(index,1);
+            }
+
 
         },
 
@@ -308,9 +326,12 @@ const controller = (function(budgetCtrl, UICtrl){
             //splitId returns an array with the split component 
             splitID = itemID.split('-');
             type = splitID[0];
-            ID = splitID[1];
+            //change string from the split to an actual number to use in the index
+            ID = parseInt(splitID[1]);
 
             //1. delete item from data structure
+            budgetCtrl.deleteItem(type,ID);
+
             //2. delete the item from the ui
             //3. update and show the new budget 
         }
