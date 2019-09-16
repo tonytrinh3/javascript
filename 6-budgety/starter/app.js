@@ -76,6 +76,13 @@ const budgetController = (function(){
             return newItem;
         },
 
+        deleteItem: function(type,id){
+
+            // id= 3
+            data.allItems[type][id];
+
+        },
+
         calculateBudget: function(){
 
             //calculate total income and expenses
@@ -125,7 +132,8 @@ const UIController = (function(){
         budgetLabel: '.budget__value',
         incomeLabel: '.budget__income--value',
         expensesLabel:'.budget__expenses--value',
-        percentageLabel: '.budget__expenses--percentage'
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
 
     };
 
@@ -150,7 +158,7 @@ const UIController = (function(){
             if (type === 'inc'){
                 element = DOMstrings.incomeContainer;
                 html =         
-                `<div class="item clearfix" id="income-%id%">
+                `<div class="item clearfix" id="inc-%id%">
                     <div class="item__description">%description%</div>
                     <div class="right clearfix">
                         <div class="item__value">%value%</div>
@@ -162,7 +170,7 @@ const UIController = (function(){
             } else if (type === 'exp'){
                 element = DOMstrings.expensesContainer;
                 html =
-                `<div class="item clearfix" id="expense-%id%">
+                `<div class="item clearfix" id="exp-%id%">
                     <div class="item__description">%description%</div>
                     <div class="right clearfix">
                         <div class="item__value">%value%</div>
@@ -248,6 +256,8 @@ const controller = (function(budgetCtrl, UICtrl){
                 ctrlAddItem();
             }
         })
+
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
     };
 
     //every function has a specific task
@@ -281,6 +291,30 @@ const controller = (function(budgetCtrl, UICtrl){
             updateBudget();
 
         }
+    };
+
+    //target returns html node in dom
+    //target is just anything our mouse clicks 
+    const ctrlDeleteItem = function(event){
+        let itemID, splitID, type, ID;
+
+        //bc the button is the parentnode of the icon x that you are pressing?
+        //then you move all the way up to the actual id that you care about to delete 
+        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        if (itemID){
+
+            //javascript puts a wrapper around the string, which is a primitive, and then change the string into an object and with the object you get a host of string helpers, from the prototypew
+            //splitId returns an array with the split component 
+            splitID = itemID.split('-');
+            type = splitID[0];
+            ID = splitID[1];
+
+            //1. delete item from data structure
+            //2. delete the item from the ui
+            //3. update and show the new budget 
+        }
+
     };
 
     return {
