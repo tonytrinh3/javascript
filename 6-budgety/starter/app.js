@@ -4,7 +4,21 @@ const budgetController = (function(){
         this.id = id;
         this.description = description;
         this.value = value;
+        this.percentage = -1;
     };
+
+    Expense.prototype.calcPercentage = function(totalIncome){
+        if (totalIncome > 0){
+            this.percentage = Math.round((this.value/totalIncome)*100);
+        } else {
+            this.percentage=-1;
+        }
+
+    };
+
+    Expense.prototype.getPercentage = function(){
+        return this.percentage;
+    }
 
     const Income = function(id, description,value){
         this.id = id;
@@ -118,6 +132,13 @@ const budgetController = (function(){
                 data.percentage = -1;
             }
    
+        },
+
+        calculatePercentages: function(){
+
+            data.allItems.exp.forEach(function(currentElement){
+                currentElement.calcPercentage();
+            })
 
         },
         //method for only returning data  - having function that only retrieve data or set data 
@@ -296,6 +317,16 @@ const controller = (function(budgetCtrl, UICtrl){
         UICtrl.displayBudget(budget);
     };
 
+    const updatePercentages = function(){
+
+        //1. calculate percentages 
+
+        //2. read percentages from the budget controller
+
+        //3. update the UI with the new percentages 
+
+    };
+
     const ctrlAddItem = function(){
         let input, newItem;
         //1. get the field input data
@@ -315,6 +346,9 @@ const controller = (function(budgetCtrl, UICtrl){
             //5. calculate and update budget
 
             updateBudget();
+
+            //6. calculate and update percentages
+            updatePercentages();
 
         }
     };
