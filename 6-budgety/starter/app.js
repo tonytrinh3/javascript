@@ -137,10 +137,20 @@ const budgetController = (function(){
         calculatePercentages: function(){
 
             data.allItems.exp.forEach(function(currentElement){
-                currentElement.calcPercentage();
+                currentElement.calcPercentage(data.totals.inc);
             })
 
         },
+
+        getPercentages: function(){
+            //allperc is an array with all percentages 
+            const allPerc = data.allItems.exp.map(function(currentElement){
+                return currentElement.getPercentage();
+            });
+
+            return allPerc;
+        },
+
         //method for only returning data  - having function that only retrieve data or set data 
         getBudget: function(){
             //object is good for returning multiple data
@@ -320,11 +330,11 @@ const controller = (function(budgetCtrl, UICtrl){
     const updatePercentages = function(){
 
         //1. calculate percentages 
-
+        budgetCtrl.calculatePercentages();
         //2. read percentages from the budget controller
-
+        const percentages = budgetCtrl.getPercentages();
         //3. update the UI with the new percentages 
-
+        console.log(percentages);
     };
 
     const ctrlAddItem = function(){
