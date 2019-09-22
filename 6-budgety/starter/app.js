@@ -287,6 +287,10 @@ const UIController = (function(){
 
         },
 
+        displayPercentages: function(){
+
+        },
+
         //you just want to pass the DOMstrings to the next function in order to keep DOMstrings in one spot
         getDOMstrings: function(){
             return DOMstrings;
