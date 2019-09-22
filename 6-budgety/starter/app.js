@@ -182,8 +182,8 @@ const UIController = (function(){
         incomeLabel: '.budget__income--value',
         expensesLabel:'.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
-        container: '.container'
-
+        container: '.container',
+        expensesPercLabel: '.item__percentage'
     };
 
     //return so info get made available to public
@@ -287,7 +287,27 @@ const UIController = (function(){
 
         },
 
-        displayPercentages: function(){
+
+        displayPercentages: function(percentages){
+            //fields returns a nodelist because each html elements are a node - that is why you use parentnode
+            const fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
+
+            const nodeListForEach = function(list, callback){
+                for (let i = 0; i < list.length; i++){
+                    callback(list[i],i);
+                }
+            };
+
+            nodeListForEach(fields, function(current, index){
+                if(percentages[index] > 0){
+                    current.textContent = percentages[index] + '%';
+                } else{
+                    current.textContent= '---';
+                }
+
+
+            });
+
 
         },
 
@@ -338,7 +358,7 @@ const controller = (function(budgetCtrl, UICtrl){
         //2. read percentages from the budget controller
         const percentages = budgetCtrl.getPercentages();
         //3. update the UI with the new percentages 
-        console.log(percentages);
+        UICtrl.displayPercentages(percentages);
     };
 
     const ctrlAddItem = function(){
