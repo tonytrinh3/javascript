@@ -63,34 +63,47 @@
         //then() allows you to consume a callback function if result was successful
         //IDs is the result of the successful 
         //so IDs is the array
-        getIDs
-        .then(IDs =>{
-            console.log(IDs);
-            //chaining - return a function here and use it in the next then method
-            //getRecipe will return a promise
-            //the next then will handle the resolve of the getRecipe promise
-            //when the promise of getRecipe is fulfill, then return the recipe
-            return getRecipe(IDs[2]);
-        })
-        //remember that recipeee is just a variable name to use within the function
-        //you are passing the resolve of the getRecipe
-        .then(recipeee=>{
-            //recipeee only return the resolve - not the actual recipe object
-            //you cannot pass the object in the resolve
-            console.log(recipeee);
-            //you cannot pass the
-            return getRelated('tony');
-        })
-        .then(recipeeex =>{
-            console.log(recipeeex);
-        }
+        // getIDs
+        // .then(IDs =>{
+        //     console.log(IDs);
+        //     //chaining - return a function here and use it in the next then method
+        //     //getRecipe will return a promise
+        //     //the next then will handle the resolve of the getRecipe promise
+        //     //when the promise of getRecipe is fulfill, then return the recipe
+        //     return getRecipe(IDs[2]);
+        // })
+        // //remember that recipeee is just a variable name to use within the function
+        // //you are passing the resolve of the getRecipe
+        // .then(recipeee=>{
+        //     //recipeee only return the resolve - not the actual recipe object
+        //     //you cannot pass the object in the resolve
+        //     console.log(recipeee);
+        //     //you cannot pass the
+        //     return getRelated('tony');
+        // })
+        // .then(recipeeex =>{
+        //     console.log(recipeeex);
+        // }
 
-        )
-        //catch is there to catch if error occurs, but error will not occur in this case
-        //error occur if there is a reject call back in the original promise
-        .catch(error =>{
-            console.log(error);
-        })
+        // )
+        // //catch is there to catch if error occurs, but error will not occur in this case
+        // //error occur if there is a reject call back in the original promise
+        // .catch(error =>{
+        //     console.log(error);
+        // })
+    
+        //async and await is es2017/es8 way to consume promises
+        async function getRecipeAW(){
+            //the IDs is the value of the resolve of getIDs which is the array
+            const IDs = await getIDs;
+            console.log(IDs);
+            const recipe = await getRecipe(IDs[2]);
+            console.log(recipe);
+            const related = await getRelated('Jonas Sch');
+            console.log(related);
+        }
+        getRecipeAW();
+
     </script>
 </body>
 </html>
