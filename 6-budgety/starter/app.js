@@ -287,6 +287,7 @@ const UIController = (function(){
 
         },
 
+
         displayPercentages: function(percentages){
             //fields returns a nodelist because each html elements are a node - that is why you use parentnode
             const fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
@@ -306,6 +307,7 @@ const UIController = (function(){
 
 
             });
+
 
         },
 
