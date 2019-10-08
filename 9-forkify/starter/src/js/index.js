@@ -1,5 +1,6 @@
 import Search from './models/Search';
-
+import * as searchView from './views/searchView';
+import { elements } from './views/base';
 
 //state is all data in one place in one object
 // global state of the app
@@ -16,26 +17,33 @@ const state = {};
 const controlSearch = async () =>{
 
     //1. get query from view
-    const query = 'pizza';
+    //now you get input value from html as the query
+    const query = searchView.getInput();
+    console.log(query);
     
     if(query){
         //2. new search object and add to state
         state.search = new Search(query)
-
+       
         //3. prepare UI for results
+        searchView.clearInput();
+        searchView.clearResults();
 
         //4. search for recipes
         //getResults() returns a promise so you need await to run it 
         await state.search.getResults();
 
         //5. render results on UI
+        //state.search.result is an array
+        //you name .result bc you returned an object called this.result from getResults()
         console.log(state.search.result);
+        searchView.renderResults(state.search.result);
 
 
     }
 }
 //e is event that is within callback function
-document.querySelector('.search').addEventListener('submit', e =>{
+elements.searchForm.addEventListener('submit', e =>{
     //you need this to prevent page from reloading every time you press button
     e.preventDefault();
     controlSearch();
