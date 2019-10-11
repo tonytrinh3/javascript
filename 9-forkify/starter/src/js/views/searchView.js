@@ -7,8 +7,10 @@ export const clearInput = () => {
     elements.searchInput.value = '';
 }
 //clear the food list when you search a new list...
+//also clear page buttons
 export const clearResults = () =>{
     elements.searchResList.innerHTML = '';
+    elements.searchResPages.innerHTML = '';
 }
 
 //this is to show all words in one line
@@ -66,9 +68,68 @@ const renderRecipe = recipe => {
     elements.searchResList.insertAdjacentHTML('beforeend',markup);
 };
 
+//'type is prev or next
+//type is button to go backward or forward
+//data-goto is a data that is attached to the html element
+const createButton = (page,type) =>`
+    <button class="btn-inline results__btn--${type}" data-goto = ${type === 'prev' ? page - 1 : page + 1 }>
+        <span>Page ${type === 'prev' ? page - 1 : page + 1 }</span>
+        <svg class="search__icon">
+            <use href="img/icons.svg#icon-triangle-${type === 'prev' ? 'left' : 'right' }"></use>
+        </svg>
+    </button>
+    `
+;
+
+
+//private function bc you aren't exporting it 
+//resPerPage = results per page
+//page is which page we are on 
+const renderButtons = (page, numResults, resPerPage) => {
+    //30 results / 10 results per page = 3 pages
+    //math ceil is to round up to nearest page
+    const pages = Math.ceil(numResults / resPerPage);
+  
+    //want to use let bc button keeps changing
+    let button;
+    if (page === 1 && pages > 1){
+        //only button to go to next page 
+        button = createButton(page,'next');
+    } else if (page < pages){
+        //both buttons
+        button = `
+            ${createButton(page,'prev')}
+            ${createButton(page,'next')}
+        `;
+    } else if (page === pages && pages > 1 ){
+        //if page 2 === number of pages 2 and number of pages is greater than 1
+        //only button to go to prev page
+        button = createButton(page,`prev`);
+    } else {
+        //when the search result is less than 10
+        button = "";
+    }
+  
+    //insert button in html
+
+    elements.searchResPages.insertAdjacentHTML('afterbegin', button);
+
+};
 
 
 //literally you are getting an array, and pushing them through each function
-export const renderResults = recipes =>{
-    recipes.forEach(renderRecipe);
+//this is the function that is going to be called when you click on the button
+//you are rendering a new page when you click the next button
+export const renderResults = (recipes, page = 1, resPerPage = 10) =>{
+    //const start = 0;
+    //RENDER RESULTS OF CURRENT PAGE
+    const start = (page - 1 ) * resPerPage;
+    const end = page*resPerPage;
+
+//slice is the first point where you start to cut and end is where to end cut 
+//end includes the last number but not the last number so 0-10 is great bc we want only 10 not 11 results
+    recipes.slice(start,end).forEach(renderRecipe);
+
+    //render page buttons
+    renderButtons(page, recipes.length ,resPerPage);
 };

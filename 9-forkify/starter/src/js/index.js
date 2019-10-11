@@ -51,5 +51,15 @@ elements.searchForm.addEventListener('submit', e =>{
     controlSearch();
 })
 
-
-
+//you need this in order to rerender the page with new results when you press button
+//event delegation is needed to access the button
+//so you touch the element above which is result__pages in order to touch the button
+elements.searchResPages.addEventListener('click', e=>{
+    //you use target.closest in order to able to click all of the button element to get the result you want
+    const btn = e.target.closest('.btn-inline');
+    if (btn){
+        const goToPage = parseInt(btn.dataset.goto,10);
+        searchView.clearResults();
+        searchView.renderResults(state.search.result, goToPage);
+    }
+})
