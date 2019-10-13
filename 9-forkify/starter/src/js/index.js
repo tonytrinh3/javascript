@@ -37,22 +37,19 @@ const controlSearch = async () =>{
         searchView.clearResults();
         renderLoader(elements.searchRes);
 
-        try{
-
-        //4. search for recipes
-        //getResults() returns a promise so you need await to run it 
-        await state.search.getResults();
-
-        //5. render results on UI
-        //state.search.result is an array
-        //you name .result bc you returned an object called this.result from getResults()
-        clearLoader();
-        searchView.renderResults(state.search.result);
-
+        try {
+            //4. search for recipes
+            //getResults() returns a promise so you need await to run it 
+            await state.search.getResults();
+            console.log(state.search.result);
+            //5. render results on UI
+            //state.search.result is an array
+            //you name .result bc you returned an object called this.result from getResults()
+            clearLoader();
+            searchView.renderResults(state.search.result);
         } catch(err){
-            alert ('Something wrong with the search...');
+            alert("something is wrong - oh well");
         }
-        
 
 
     }
@@ -104,6 +101,7 @@ const controlRecipe = async () => {
             //get recipe data
             //await so you can reload recipe in background
             await state.recipe.getRecipe();
+            state.recipe.parseIngredients();
 
             //calculate servings and time
             state.recipe.calcTime();
