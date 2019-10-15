@@ -97,7 +97,7 @@ export default class Recipe {
 
             }
             return objIng;
-            console.log(objIng);
+           
         });
         this.ingredients = newIngredients;
     }

@@ -26,8 +26,8 @@ const controlSearch = async () =>{
 
     //1. get query from view
     //now you get input value from html as the query
-    //const query = searchView.getInput();
-    const query = 'pizza';
+    const query = searchView.getInput();
+
     
     if(query){
         //2. new search object and add to state
@@ -35,7 +35,6 @@ const controlSearch = async () =>{
 
        
 
-        window.r = state.recipe;
        
         //3. prepare UI for results
         searchView.clearInput();
@@ -68,11 +67,7 @@ elements.searchForm.addEventListener('submit', e =>{
     controlSearch();
 });
 
-window.addEventListener('load', e =>{
-    //you need this to prevent page from reloading every time you press button
-    e.preventDefault();
-    controlSearch();
-});
+
 
 
 //you need this in order to rerender the page with new results when you press search button
