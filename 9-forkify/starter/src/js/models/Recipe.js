@@ -54,7 +54,7 @@ export default class Recipe {
             //findIndex is like a loop - loops throw unitsShorts then see if the word in ingredient array is included in unitsShorts 
             //returns position of the unit
             const unitIndex = arrIng.findIndex(el2 => units.includes(el2));
-            console.log(unitIndex);
+            
 
             let objIng;
             if(unitIndex > -1){
@@ -97,6 +97,7 @@ export default class Recipe {
 
             }
             return objIng;
+            console.log(objIng);
         });
         this.ingredients = newIngredients;
     }

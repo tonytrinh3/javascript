@@ -26,12 +26,16 @@ const controlSearch = async () =>{
 
     //1. get query from view
     //now you get input value from html as the query
-    const query = searchView.getInput();
-    console.log(query);
+    //const query = searchView.getInput();
+    const query = 'pizza';
     
     if(query){
         //2. new search object and add to state
         state.search = new Search(query)
+
+       
+
+        window.r = state.recipe;
        
         //3. prepare UI for results
         searchView.clearInput();
@@ -43,6 +47,7 @@ const controlSearch = async () =>{
             //getResults() returns a promise so you need await to run it 
             await state.search.getResults();
             console.log(state.search.result);
+           
             //5. render results on UI
             //state.search.result is an array
             //you name .result bc you returned an object called this.result from getResults()
@@ -61,7 +66,14 @@ elements.searchForm.addEventListener('submit', e =>{
     //you need this to prevent page from reloading every time you press button
     e.preventDefault();
     controlSearch();
-})
+});
+
+window.addEventListener('load', e =>{
+    //you need this to prevent page from reloading every time you press button
+    e.preventDefault();
+    controlSearch();
+});
+
 
 //you need this in order to rerender the page with new results when you press search button
 //event delegation is needed to access the button
@@ -115,6 +127,7 @@ const controlRecipe = async () => {
 
             //render recipe
             clearLoader();
+            console.log(state.recipe);
             recipeView.renderRecipe(state.recipe);
             
         } catch(err){

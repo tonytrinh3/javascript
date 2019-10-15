@@ -7,7 +7,7 @@ export const clearRecipe = () =>{
     elements.recipe.innerHTML = '';
 }
 
-const createIngredient = ingredient => `
+const createIngredient = ingredient =>` 
     <li class="recipe__item">
         <svg class="recipe__icon">
             <use href="img/icons.svg#icon-check"></use>
@@ -18,7 +18,7 @@ const createIngredient = ingredient => `
             ${ingredient.ingredient}
         </div>
     </li>
-`
+    `;
 
 export const renderRecipe = recipe =>{
     const markup = `
@@ -28,6 +28,7 @@ export const renderRecipe = recipe =>{
             <span>${recipe.title}</span>
         </h1>
     </figure>
+    
     <div class="recipe__details">
         <div class="recipe__info">
             <svg class="recipe__info-icon">
@@ -42,45 +43,41 @@ export const renderRecipe = recipe =>{
             </svg>
             <span class="recipe__info-data recipe__info-data--people">${recipe.servings}</span>
             <span class="recipe__info-text"> servings</span>
-
+    
             <div class="recipe__info-buttons">
-                <button class="btn-tiny">
+                <button class="btn-tiny btn-decrease">
                     <svg>
                         <use href="img/icons.svg#icon-circle-with-minus"></use>
                     </svg>
                 </button>
-                <button class="btn-tiny">
+                <button class="btn-tiny btn-increase">
                     <svg>
                         <use href="img/icons.svg#icon-circle-with-plus"></use>
                     </svg>
                 </button>
             </div>
-
+    
         </div>
         <button class="recipe__love">
-            <svg class="header__likes">
-                <use href="img/icons.svg#icon-heart-outlined"></use>
-            </svg>
+        <svg class="header__likes">
+            <use href="img/icons.svg#icon-heart-outlined"></use>
+        </svg>
         </button>
     </div>
-
-
-
+    
     <div class="recipe__ingredients">
         <ul class="recipe__ingredient-list">
-            ${recipe.ingredients.map(el =>{createIngredient(el)}).join('')}
-        
-           
+            ${recipe.ingredients.map(el => createIngredient(el)).join('')}
         </ul>
-
-        <button class="btn-small recipe__btn">
+    
+        <button class="btn-small recipe__btn recipe__btn--add">
             <svg class="search__icon">
                 <use href="img/icons.svg#icon-shopping-cart"></use>
             </svg>
             <span>Add to shopping list</span>
         </button>
     </div>
-
+    
     <div class="recipe__directions">
         <h2 class="heading-2">How to cook it</h2>
         <p class="recipe__directions-text">
@@ -92,10 +89,12 @@ export const renderRecipe = recipe =>{
             <svg class="search__icon">
                 <use href="img/icons.svg#icon-triangle-right"></use>
             </svg>
-
+    
         </a>
     </div>
     `;
 
     elements.recipe.insertAdjacentHTML('afterbegin', markup);
 }
+
+
