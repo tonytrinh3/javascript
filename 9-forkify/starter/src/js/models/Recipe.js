@@ -36,9 +36,8 @@ export default class Recipe {
     parseIngredients(){
         const unitsLong = ['tablespoons','tablespoon', 'ounces','ounce','teaspoons','teaspoon','cups','pounds'];
         const unitsShort = ['tbsp','tbsp','oz','oz','tsp','tsp','cup','pound'];
-
-
-
+        //added in here in order to include kg and g
+        const units = [...unitsShort, 'kg','g'];
 
         const newIngredients = this.ingredients.map(el =>{
             
@@ -54,7 +53,7 @@ export default class Recipe {
             const arrIng = ingredient.split(' ');
             //findIndex is like a loop - loops throw unitsShorts then see if the word in ingredient array is included in unitsShorts 
             //returns position of the unit
-            const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
+            const unitIndex = arrIng.findIndex(el2 => units.includes(el2));
             console.log(unitIndex);
 
             let objIng;
@@ -87,7 +86,6 @@ export default class Recipe {
                     ingredient: arrIng.slice(1).join(' ')
                 };
 
-
             } else if (unitIndex === -1){
                 //there is NO unit and NO number in 1st position
                 //count is 1 by default if there is no number associated with it 
@@ -98,15 +96,7 @@ export default class Recipe {
                 };
 
             }
-
-
-
             return objIng;
-
-
-
-
-            
         });
         this.ingredients = newIngredients;
     }

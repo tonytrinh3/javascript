@@ -1,6 +1,7 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 //state is all data in one place in one object
@@ -55,13 +56,14 @@ const controlSearch = async () =>{
     }
 }
 //e is event that is within callback function
+//to click button to do search
 elements.searchForm.addEventListener('submit', e =>{
     //you need this to prevent page from reloading every time you press button
     e.preventDefault();
     controlSearch();
 })
 
-//you need this in order to rerender the page with new results when you press button
+//you need this in order to rerender the page with new results when you press search button
 //event delegation is needed to access the button
 //so you touch the element above which is result__pages in order to touch the button
 elements.searchResPages.addEventListener('click', e=>{
@@ -91,6 +93,10 @@ const controlRecipe = async () => {
 
     if (id){
         //prepare ui for changes
+    
+        recipeView.clearRecipe();
+        //renderloader is the spinning thing - you need to pass parent div
+        renderLoader(elements.recipe);
 
         //create new recipe object
         //you created a new line within state call state.recipe and it now has the new class
@@ -108,7 +114,9 @@ const controlRecipe = async () => {
             state.recipe.calcServings();
 
             //render recipe
-            console.log(state.recipe);
+            clearLoader();
+            recipeView.renderRecipe(state.recipe);
+            
         } catch(err){
             alert('Error processing recipe!')
         }
