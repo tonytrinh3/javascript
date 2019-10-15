@@ -5,13 +5,21 @@ export const getInput = () => elements.searchInput.value;
 //to clear the searchinput value after you type it 
 export const clearInput = () => {
     elements.searchInput.value = '';
-}
+};
 //clear the food list when you search a new list...
 //also clear page buttons
 export const clearResults = () =>{
     elements.searchResList.innerHTML = '';
     elements.searchResPages.innerHTML = '';
-}
+};
+
+export const highlightSelected = id => {
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+    resultsArr.forEach(el => {
+        el.classList.remove('results__link--active');
+    });
+    document.querySelector(`.results__link[href*="${id}"]`).classList.add('results__link--active');
+};
 
 //this is to show all words in one line
 const limitRecipeTitle = (title,limit = 17) => {
@@ -46,7 +54,7 @@ const limitRecipeTitle = (title,limit = 17) => {
 
     //return title if title length is less than limit
     return title
-}
+};
 
 
 //recipe are the individual recipe, part of each array, that you are pushing through

@@ -105,6 +105,15 @@ const controlRecipe = async () => {
         //renderloader is the spinning thing - you need to pass parent div
         renderLoader(elements.recipe);
 
+        //highlight selected search item
+        if (state.search) {
+            searchView.highlightSelected(id);
+        };
+
+
+
+
+
         //create new recipe object
         //you created a new line within state call state.recipe and it now has the new class
         state.recipe = new Recipe(id);
