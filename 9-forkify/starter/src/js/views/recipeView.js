@@ -116,6 +116,23 @@ export const renderRecipe = recipe =>{
     `;
 
     elements.recipe.insertAdjacentHTML('afterbegin', markup);
-}
+};
+
+export const updateServingsIngredients = recipe => {
+    //Update servings
+    document.querySelector('.recipe__info-data--people').textContent = recipe.servings;
+
+    //Update ingredients
+    //Array.from() creates a new empty array for you to put your stuff in 
+    //you are taking an array of all divs that have recipe count
+    const countElements = Array.from(document.querySelectorAll('.recipe__count'));
+    //for each recipe_count div - you are changin the textContent to a new number, the index is to match the corresponding textContent with the new count 
+    countElements.forEach((el, i) =>{
+        el.textContent = formatCount(recipe.ingredients[i].count);
+    });
+};
+
+
+
 
 

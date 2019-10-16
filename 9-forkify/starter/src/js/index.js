@@ -131,7 +131,6 @@ const controlRecipe = async () => {
 
             //render recipe
             clearLoader();
-            console.log(state.recipe);
             recipeView.renderRecipe(state.recipe);
             
         } catch(err){
@@ -149,3 +148,24 @@ const controlRecipe = async () => {
 //oh..so with window.load - when you reload the page, the controlRecipe still fires... - in order to make the content on the page stagnant? 
 //hashchange is tagged onto window object - calls controlRecipe when there is a change in hash content in url
 ['hashchange','load'].forEach(event => window.addEventListener(event,controlRecipe));
+
+//Handling recipe button clicks 
+elements.recipe.addEventListener('click', e =>{
+    //.btn-decrease * means any child of btn-decrease
+    //you use match in order to allow you press button, or svg, use and it all allow you to use match 
+    if (e.target.matches('.btn-decrease, .btn-decrease *')){
+        //Decrease button is clicked
+        //remember that state.recipe comes from the object new Recipe, which is created from Recipe.js
+        //you can then use updateServings method with state.recipe 
+        if (state.recipe.servings > 1){
+            state.recipe.updateServings('dec');
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+    } else if (e.target.matches('.btn-increase, .btn-increase *')){
+        //Increase button is clicked
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+    console.log(state.recipe);
+});
+

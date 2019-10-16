@@ -102,4 +102,21 @@ export default class Recipe {
         this.ingredients = newIngredients;
     }
 
+    updateServings(type){
+        //Servings
+        //this assigns newServings with minus the serving amount or add to serving ammount if type is dec or inc
+        const newServings = type === 'dec' ? this.servings -1 : this.servings +1;
+        console.log(this.servings);
+
+        //ingredients 
+        this.ingredients.forEach(ing => {
+            //ing.count = ing.count * (newServings / this.servings)
+            //ing.count = 2 * ( 3/4); newServings should be more or less than this.servings
+            ing.count *= (newServings / this.servings);
+        });
+        //updating the this.servings property of object to the newServings
+        this.servings = newServings;
+
+
+    }
 }
